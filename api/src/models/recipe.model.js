@@ -2,15 +2,27 @@ import mongoose from "mongoose";
 
 const recipeSchema = new mongoose.Schema(
 	{
+		image: {
+			type: String,
+			required: true,
+		},
 		name: {
 			type: String,
 			required: true,
 		},
-		imageUrl: {
+		category: {
 			type: String,
 			required: true,
 		},
-		ingredients: {
+		description: {
+			type: String,
+			required: true,
+		},
+		countryOfOrigin: {
+			type: String,
+			required: true,
+		},
+		ingrdients: {
 			type: String,
 			required: true,
 		},
@@ -18,13 +30,19 @@ const recipeSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
-		category: {
-			type: Stringg,
+		cookingTime: {
+			type: String,
 			required: true,
 		},
-		cookingTime: {
+		servings: {
 			type: Number,
 			required: true,
+		},
+		user: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "User",
+			required: true,
+			index: true,
 		},
 	},
 	{ timestamps: true }
@@ -33,3 +51,4 @@ const recipeSchema = new mongoose.Schema(
 const Recipe = mongoose.model("Recipe", recipeSchema);
 
 export default Recipe;
+
