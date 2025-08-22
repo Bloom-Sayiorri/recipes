@@ -18,7 +18,7 @@ const getAllRecipes = async (req, res, next) => {
 	}
 };
 
-const getOneRecipe = async (req, res, next) => {
+const getRecipe = async (req, res, next) => {
 	try {
 		const recipe = await Recipe.findById(req.params.id);
 		if (!recipe) {
@@ -87,7 +87,7 @@ const deleteRecipe = async (req, res, next) => {
 
 export default RecipeController = {
 	getAllRecipes,
-	getOneRecipe,
+	getRecipe,
 	createRecipe,
 	updateRecipe,
 	deleteRecipe,
