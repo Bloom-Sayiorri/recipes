@@ -18,20 +18,24 @@ const recipeSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
-		countryOfOrigin: {
+		cuisine: {
 			type: String,
 			required: true,
 		},
-		ingrdients: {
-			type: String,
+		ingredients: {
+			type: [String],
 			required: true,
 		},
 		instructions: {
-			type: String,
+			type: [String],
+			required: true,
+		},
+		prepTime: {
+			type: Number,
 			required: true,
 		},
 		cookingTime: {
-			type: String,
+			type: Number,
 			required: true,
 		},
 		servings: {
@@ -44,6 +48,13 @@ const recipeSchema = new mongoose.Schema(
 			required: true,
 			index: true,
 		},
+		reviews: [
+			{
+				comment: String,
+				rating: Number,
+				user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+			},
+		],
 	},
 	{ timestamps: true }
 );

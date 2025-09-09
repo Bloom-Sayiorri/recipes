@@ -20,6 +20,12 @@ const reviewSchema = new mongoose.Schema(
 			required: true,
 			index: true,
 		},
+		recipe: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Recipe",
+			required: true,
+			index: true,
+		},
 	},
 	{ timestamps: true }
 );
