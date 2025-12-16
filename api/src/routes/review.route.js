@@ -1,5 +1,5 @@
 import express from "express";
-import ReviewController from "../controllers/review.controller";
+import ReviewController from "../controllers/review.controller.js";
 
 const router = express.Router();
 
@@ -13,4 +13,3 @@ router.put("/", updateReview);
 router.delete("/", deleteReview);
 
 export default router;
-

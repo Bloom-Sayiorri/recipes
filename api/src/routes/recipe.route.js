@@ -1,5 +1,5 @@
 import express from "express";
-import RecipeController from "../controllers/recipe.controller";
+import RecipeController from "../controllers/recipe.controller.js";
 
 const recipeRouter = express.Router();
 
@@ -13,3 +13,4 @@ recipeRouter.put("/:id", updateRecipe);
 recipeRouter.delete("/:id", deleteRecipe);
 
 export default recipeRouter;
+
