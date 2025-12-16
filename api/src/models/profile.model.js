@@ -22,7 +22,13 @@ const profileSchema = new mongoose.Schema(
 		preferences: {
 			diet: {
 				type: String,
-				enum: ["vegeterian", "none", "gluten-free", "lactose-intolerant", "keto"],
+				enum: [
+					"vegeterian",
+					"none",
+					"gluten-free",
+					"lactose-intolerant",
+					"keto",
+				],
 			},
 			allergies: [String],
 			cuisine: [String],
@@ -36,7 +42,7 @@ const profileSchema = new mongoose.Schema(
 	{ timestamps: true }
 );
 
-const Profile = mongoose.Model("Profile", profileSchema);
+const Profile = mongoose.model("Profile", profileSchema);
 
 export default Profile;
 
