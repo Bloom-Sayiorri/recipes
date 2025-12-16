@@ -1,8 +1,8 @@
-import User from "../models/user.model";
-import AppError from "../utils/appError";
+import User from "../models/user.model.js";
+import AppError from "../utils/appError.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { JWT_EXPIRES_IN, JWT_SECRET } from "../config/env";
+import { JWT_EXPIRES_IN, JWT_SECRET } from "../config/env.js";
 
 /**
  * @desc    Login user

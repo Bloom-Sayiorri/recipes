@@ -1,16 +1,17 @@
-import Recipe from "../models/recipe.model";
-import AppError from "../utils/appError";
+import Recipe from "../models/recipe.model.js";
+import AppError from "../utils/appError.js";
 
 const getAllRecipes = async (req, res, next) => {
 	try {
-		const recipes = await Recipe.find();
-		if (!recipes) {
-			return next(new AppError("Failed retrieving recipes.", 404));
+		const recipes = await Recipe.find({});
+
+		if (recipes.length === 0) {
+			return next(new AppError("No recipes found.", 404));
 		}
 
 		res.status(200).json({
 			success: true,
-			message: "Recipes retrieved successffully.",
+			message: "Recipes retrieved successfully.",
 			data: recipes,
 		});
 	} catch (error) {
@@ -85,11 +86,12 @@ const deleteRecipe = async (req, res, next) => {
 	}
 };
 
-export default RecipeController = {
+const RecipeController = {
 	getAllRecipes,
 	getRecipe,
 	createRecipe,
 	updateRecipe,
 	deleteRecipe,
 };
+export default RecipeController;
 

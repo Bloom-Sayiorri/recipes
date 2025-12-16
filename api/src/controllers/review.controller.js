@@ -1,5 +1,5 @@
-import Review from "../models/review.model";
-import AppError from "../utils/appError";
+import Review from "../models/review.model.js";
+import AppError from "../utils/appError.js";
 
 const getAllReviews = async (req, res, next) => {
 	try {
@@ -89,4 +89,3 @@ const ReviewController = {
 };
 
 export default ReviewController;
-
