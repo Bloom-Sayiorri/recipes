@@ -2,11 +2,6 @@ import mongoose from "mongoose";
 
 const profileSchema = new mongoose.Schema(
 	{
-		user: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: "User",
-			required: true,
-		},
 		avatar: {
 			type: String,
 			required: false,
@@ -16,27 +11,32 @@ const profileSchema = new mongoose.Schema(
 			required: false,
 			maxLength: 500,
 		},
-		followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-		following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-		notifications: String,
+		followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }],
+		following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }],
+		notifications: {
+			type: String,
+			enum: ["all", "mentions", "important", "none"],
+			default: "all",
+			required: false,
+		},
 		preferences: {
 			diet: {
 				type: String,
-				enum: [
-					"vegeterian",
-					"none",
-					"gluten-free",
-					"lactose-intolerant",
-					"keto",
-				],
+				enum: ["vegeterian", "none", "gluten-free", "lactose-intolerant", "keto"],
+				required: false,
 			},
-			allergies: [String],
-			cuisine: [String],
+			allergies: { type: [String], required: false },
+			cuisine: { type: [String], required: false },
 		},
-		sociaLinks: {
-			website: String,
-			instagram: String,
-			twitter: String,
+		socialLinks: {
+			website: { type: String, required: false },
+			instagram: { type: String, required: false },
+			twitter: { type: String, required: false },
+		},
+		user: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "User",
+			required: true,
 		},
 	},
 	{ timestamps: true }
@@ -45,4 +45,8 @@ const profileSchema = new mongoose.Schema(
 const Profile = mongoose.model("Profile", profileSchema);
 
 export default Profile;
+
+
+
+
 

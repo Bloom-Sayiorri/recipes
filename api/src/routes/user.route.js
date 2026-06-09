@@ -4,12 +4,11 @@ import { protect } from "../middlewares/auth.middleware.js";
 
 const userRouter = Router();
 
-const { getAllUsers, getUser, signUp, updateUser, deleteUser } = UserController;
+const { getAllUsers, getUser, updateUser, deleteUser } = UserController;
 
 userRouter.get("/", getAllUsers);
 userRouter.get("/:id", getUser);
-userRouter.post("/sign-up", signUp);
-userRouter.put("/:id", updateUser);
+userRouter.patch("/:id", updateUser);
 userRouter.delete("/:id", deleteUser);
 
 // protected route

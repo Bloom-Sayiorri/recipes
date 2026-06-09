@@ -11,6 +11,9 @@ import userRouter from "./routes/user.route.js";
 import authRouter from "./routes/auth.route.js";
 import recipeRouter from "./routes/recipe.route.js";
 import reviewRouter from "./routes/review.route.js";
+import favoriteRouter from "./routes/favorite.route.js";
+import notificationRouter from "./routes/notification.route.js";
+import profileRouter from "./routes/profile.route.js";
 
 dotenv.config();
 const app = express();
@@ -31,6 +34,9 @@ app.use("/api/users", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/recipes", recipeRouter);
 app.use("/api/reviews", reviewRouter);
+app.use("/api/favorites", favoriteRouter);
+app.use("/api/notifications", notificationRouter);
+app.use("/api/profiles", profileRouter);
 
 app.use(errorMiddleware);
 

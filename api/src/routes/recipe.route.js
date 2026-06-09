@@ -13,4 +13,3 @@ recipeRouter.put("/:id", updateRecipe);
 recipeRouter.delete("/:id", deleteRecipe);
 
 export default recipeRouter;
-

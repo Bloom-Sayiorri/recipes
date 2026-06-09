@@ -8,8 +8,8 @@ const { getAllReviews, getReview, createReview, updateReview, deleteReview } =
 
 router.get("/", getAllReviews);
 router.get("/:id", getReview);
-router.post("/", createReview);
-router.put("/", updateReview);
-router.delete("/", deleteReview);
+router.post("/new", createReview);
+router.patch("/:id", updateReview);
+router.delete("/:id", deleteReview);
 
 export default router;

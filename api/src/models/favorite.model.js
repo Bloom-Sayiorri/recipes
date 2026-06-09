@@ -10,6 +10,6 @@ const favoriteSchema = new mongoose.Schema(
 
 favoriteSchema.index({ user: 1, recipe: 1 }, { unique: true });
 
-const Favorite = mongoose.Model("Favorite", favoriteSchema);
+const Favorite = mongoose.model("Favorite", favoriteSchema);
 
 export default Favorite;

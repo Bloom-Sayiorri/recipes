@@ -14,15 +14,15 @@ const reviewSchema = new mongoose.Schema(
 			max: [5, "Rating must be between 1-5."],
 			required: false,
 		},
-		user: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: "User",
-			required: true,
-			index: true,
-		},
 		recipe: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "Recipe",
+			required: true,
+			index: true,
+		},
+		user: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "User",
 			required: true,
 			index: true,
 		},
@@ -33,4 +33,3 @@ const reviewSchema = new mongoose.Schema(
 const Review = mongoose.model("Review", reviewSchema);
 
 export default Review;
-

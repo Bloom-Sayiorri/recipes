@@ -12,7 +12,7 @@ export const protect = async (req, res, next) => {
 		}
 
 		if (!token) {
-			return next(new AppError("Not authorized, token missing.", 401));
+			return next(new AppError("Not authorized, token is missing.", 401));
 		}
 
 		// Verify token
@@ -30,4 +30,3 @@ export const protect = async (req, res, next) => {
 		next(new AppError("Not authorized, invalid token.", 401));
 	}
 };
-

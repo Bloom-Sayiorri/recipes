@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
@@ -12,21 +13,15 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			required: [true, "Email field required."],
 			unique: true,
-			tim: true,
 			lowercase: true,
-			match: [/\$+@\$+\.\$+/, "Please input a valid email."],
+			trim: true,
+			match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email"],
 		},
 		password: {
 			type: String,
 			required: [true, "Password field required."],
 			minLength: [6, "Password must be at least 6 characters."],
-			maxLength: [25, "Password too long."],
-		},
-		passwordConfirmation: {
-			type: String,
-			required: [true, "Password Confirmation field required."],
-			minLength: [6, "Password must be at least 6 characters."],
-			maxLength: [25, "Password too long."],
+			maxLength: [255, "Password too long."],
 		},
 		avatar: {
 			type: String,
@@ -36,6 +31,16 @@ const userSchema = new mongoose.Schema(
 	},
 	{ timestamps: true }
 );
+
+userSchema.pre("save", async function (next) {
+	if (!this.isModified("password")) return next();
+	this.password = bcrypt.hash(this.password, 10);
+	next();
+});
+
+userSchema.methods.comparePassword = function (plainPassword) {
+	return bcrypt.compare(plainPassword, this.password);
+};
 
 const User = mongoose.model("User", userSchema);
 

@@ -4,7 +4,7 @@ export default function errorMiddleware(err, req, res, next) {
 	let statusCode = err.statusCode || 500;
 	let message = err.message || "Server error.";
 
-	//Mongoose bad OnjectId
+	//Mongoose bad ObjectId
 	if (err.name === "CastError") {
 		statusCode = 400;
 		message = "Resource not found.";
@@ -23,4 +23,3 @@ export default function errorMiddleware(err, req, res, next) {
 		error: message,
 	});
 }
-
