@@ -43,7 +43,7 @@ const createReview = async (req, res, next) => {
 		if (rating < 1 || rating > 5) {
 			return next(new AppError("Rating must be between 1 and 5", 422));
 		}
-		const review = await Review.create({ comment, rating, recipe: recipeId, user: req.user._id });
+		const review = await Review.create({ comment, rating, recipe: recipeId, user: req.user.id });
 		res.status(201).json({
 			success: true,
 			message: "Review created successfully.",

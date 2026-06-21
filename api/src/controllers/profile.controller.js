@@ -42,7 +42,7 @@ const createProfile = async (req, res, next) => {
 			bio,
 			preferences,
 			socialLinks,
-			user: req.user._id,
+			user: req.user.id,
 
 			// server-controlled defaults
 			followers: [],

@@ -40,7 +40,7 @@ const createNotification = async (req, res, next) => {
 			data,
 			message,
 			type,
-			from: req.user._id,
+			from: req.user.id,
 			user
 		});
 		res.status(201).json({
@@ -67,7 +67,7 @@ const updateNotification = async (req, res, next) => {
 		if (!notification) {
 			return next(new AppError("Notification not found.", 404));
 		}
-		if (notification.user.toString() !== req.user._id.toString()) {
+		if (notification.user.toString() !== req.user.id.toString()) {
 			return next(new AppError("Not authorized", 403));
 		}
 

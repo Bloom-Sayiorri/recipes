@@ -14,6 +14,7 @@ import reviewRouter from "./routes/review.route.js";
 import favoriteRouter from "./routes/favorite.route.js";
 import notificationRouter from "./routes/notification.route.js";
 import profileRouter from "./routes/profile.route.js";
+import { seedRecipes } from "./utils/seed.js";
 
 dotenv.config();
 const app = express();
@@ -43,4 +44,5 @@ app.use(errorMiddleware);
 app.listen(PORT, () => {
 	connectDB();
 	console.log(`Server is running on port: http://localhost:${PORT}`);
+	// seedRecipes();
 });

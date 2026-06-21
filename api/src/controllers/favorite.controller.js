@@ -36,7 +36,7 @@ const getFavorite = async (req, res, next) => {
 
 const createFavorite = async (req, res, next) => {
 	try {
-		const favorite = await Favorite.create({ recipe: req.recipe._id, user: req.user._id });
+		const favorite = await Favorite.create({ recipe: req.recipe.id, user: req.user.id });
 		return res.status(201).json({
 			success: true,
 			message: "Favorite created successfully.",

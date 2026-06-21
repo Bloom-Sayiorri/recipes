@@ -53,7 +53,7 @@ export const updateUser = async (req, res, next) => {
 
 		// Update user
 		const updatedUser = await User.findByIdAndUpdate(
-			req.user._id,
+			req.user.id,
 			userFields,
 			{
 				new: true,
@@ -66,15 +66,15 @@ export const updateUser = async (req, res, next) => {
 		}
 
 		// Update or create profile
-		let profile = await Profile.findOne({ user: req.user._id });
+		let profile = await Profile.findOne({ user: req.user.id });
 		if (!profile) {
 			profile = await Profile.create({
-				user: req.user._id,
+				user: req.user.id,
 				...profileFields,
 			});
 		} else {
 			profile = await Profile.findByIdAndUpdate(
-				profile._id,
+				profile.id,
 				profileFields,
 				{
 					new: true,
@@ -85,7 +85,7 @@ export const updateUser = async (req, res, next) => {
 
 		if (!profile && Object.keys(profileFields).length > 0) {
 			profile = await Profile.create({
-				user: req.user._id,
+				user: req.user.id,
 				...profileFields,
 			});
 		}

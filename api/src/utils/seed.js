@@ -45,24 +45,15 @@ export async function seedRecipes() {
 	try {
 		await mongoose.connect(MONGO_URI);
 		console.log("MongoDB connected on seed.js");
+
 		console.log("Preparing to seed database! 🌱🌱🌱");
-		// const filePath = path.join(process.cwd(), "src", "utils", "db.json");
-		// const rawData = fs.readFileSync(filePath, "utf-8");
-		// const data = JSON.parse(rawData);
-		const recipes = await Recipe.find({});
-		// console.log(recipes)
-		// await Recipe.deleteMany({});
-		// console.log("Existing recipes removed");
-		const transformedRecipes = recipes.map((recipe) => ({
-			...recipe,
-			instructions:
-				typeof recipe.instructions === "string"
-					? recipe.instructions.split(/\r?\n/).filter(Boolean)
-					: Array.isArray(recipe.instructions)
-					? recipe.instructions
-					: [],
-		}));
-		await Recipe.insertMany(transformedRecipes);
+		const filePath = path.join(process.cwd(), "src", "utils", "db.json");
+		const rawData = fs.readFileSync(filePath, "utf-8");
+		const data = JSON.parse(rawData);
+		const recipes = data.meals || [];
+		await Recipe.deleteMany({});
+		console.log("Existing recipes removed");
+		await Recipe.insertMany(recipes);
 		console.log(`Database seeded successfully with ${recipes.length} recipes ✅✅✅`);
 		mongoose.connection.close();
 		process.exit();
@@ -301,6 +292,5 @@ export async function seedProfiles() {
 		console.error(error);
 		process.exit(1);
 	}
-
 
 }

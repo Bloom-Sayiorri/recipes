@@ -59,7 +59,7 @@ const createRecipe = async (req, res, next) => {
 			instructions,
 			approved,
 			youtube_code,
-			user: req.user._id,
+			user: req.user.id,
 		});
 		res.status(201).json({
 			success: true,

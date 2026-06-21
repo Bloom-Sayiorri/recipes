@@ -15,7 +15,7 @@ export const signup = async (req, res, next) => {
 			success: true,
 			message: "User created successfully",
 			data: {
-				id: user._id,
+				id: user.id,
 				username: user.username,
 				email: user.email,
 			},
@@ -42,7 +42,7 @@ export const login = async (req, res, next) => {
 			return next(new AppError("Invalid credentials", 401));
 		}
 
-		const token = jwt.sign({ user_id: user._id }, JWT_SECRET, {
+		const token = jwt.sign({ user_id: user.id }, JWT_SECRET, {
 			expiresIn: JWT_EXPIRES_IN,
 		});
 
@@ -52,7 +52,7 @@ export const login = async (req, res, next) => {
 			data: {
 				token,
 				user: {
-					id: user._id,
+					id: user.id,
 					username: user.username,
 					email: user.email,
 				},

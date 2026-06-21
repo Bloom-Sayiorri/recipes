@@ -2,17 +2,17 @@ import mongoose from "mongoose";
 
 const recipeSchema = new mongoose.Schema(
 	{
-		recipe_name: { type: String, required: true },
-		recipe_category: { type: String, required: true },
-		recipe_thumb: { type: String, required: true },
-		description: { type: String, required: true },
-		country_of_origin: { type: String, required: true },
-		number_of_people_served: { type: Number, required: true },
-		ingredients: { type: [String], required: true },
-		instructions: { type: [String], required: true },
+		recipe_name: { type: String, required: false },
+		recipe_category: { type: String, required: false },
+		recipe_thumb: { type: String, required: false },
+		description: { type: String, required: false },
+		country_of_origin: { type: String, required: false },
+		number_of_people_served: { type: Number, required: false },
+		ingredients: { type: String, required: false },
+		instructions: { type: String, required: false },
 		approved: { type: Boolean, default: false },
 		youtube_code: { type: String, required: false },
-		user_id: { type: Number, required: true },
+		user_id: { type: Number, required: false },
 	},
 	{ timestamps: true }
 );
@@ -29,6 +29,14 @@ export default Recipe;
 // 	image: {type: String, required: false },
 // 	ingredients: { type: [String], required: true },
 // 	instructions: { type: [String], required: true },
+// ingredients: [
+		// 	{
+		// 		name: { type: String, required: false },
+		// 		quantity: { type: String, required: false },
+		// 		image: { type: String, required: false },
+		// 		default: [],	
+		// 	},	
+		// ],
 // 	mealType: { type: ["Breakfast", "Lunch", "Dinner"], required: true },
 // 	name: { type: String, required: true },
 // 	prepTimeMinutes: { type: Number, required: true },
@@ -37,9 +45,4 @@ export default Recipe;
 // 	tags: { type: [String], required: true },
 // 	review: { type: mongoose.Schema.Types.ObjectId, ref: "Review", required: true },
 // 	userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-
-
-
-
-
 // }
