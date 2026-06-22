@@ -1,6 +1,6 @@
-import User from "../models/user.model.js";
 import AppError from "../utils/appError.js";
 import bcrypt from "bcrypt";
+import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import { JWT_EXPIRES_IN, JWT_SECRET } from "../config/env.js";
 
@@ -27,12 +27,12 @@ export const signup = async (req, res, next) => {
 
 export const login = async (req, res, next) => {
 	try {
-		const { email, password } = req.body;
-		if (!email || !password) {
+		const { username, password } = req.body;
+		if (!username || !password) {
 			return next(new AppError("Input fields are required.", 422));
 		}
 
-		const user = await User.findOne({ email }).select("+password");
+		const user = await User.findOne({ username }).select("+password");
 		if (!user) {
 			return next(new AppError("Invalid credentials", 401));
 		}
@@ -55,6 +55,7 @@ export const login = async (req, res, next) => {
 					id: user.id,
 					username: user.username,
 					email: user.email,
+					admin: user.admin,
 				},
 			},
 		});
