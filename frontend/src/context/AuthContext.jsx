@@ -68,8 +68,8 @@ const AuthProvider = ({ children }) => {
 		}
 
 		return {
-			user: data.user,
-			token: data.token,
+			user: data.data.user,
+			token: data.data.token,
 		};
 	}
 
@@ -81,7 +81,6 @@ const AuthProvider = ({ children }) => {
 
 		localStorage.setItem("token", token);
 		localStorage.setItem("user", JSON.stringify(user));
-		localStorage.setItem("admin", user.admin);
 
 		return user;
 	};
