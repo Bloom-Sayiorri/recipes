@@ -3,12 +3,12 @@ import { useParams } from "react-router-dom";
 import { GoPin } from "react-icons/go";
 
 function SubmittedRecipes() {
+	const url = process.env.REACT_APP_NODE_API_URL;
 	const [recipe, setRecipe] = useState(null);
-
 	const { id } = useParams();
 
 	useEffect(() => {
-		fetch("http://localhost:3000/recipes/")
+		fetch(`${url}/recipes`)
 			.then((res) => res.json())
 			.then((data) => setRecipe(data));
 	}, []);

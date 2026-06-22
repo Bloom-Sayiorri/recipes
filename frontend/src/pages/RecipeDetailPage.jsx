@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { GoPin } from "react-icons/go";
 import { BsFillHeartFill, BsStarFill } from "react-icons/bs";
@@ -13,6 +13,7 @@ import ReviewsForm from "./ReviewsForm";
 // import { AuthContext } from "../context/AuthContext";
 
 function RecipeDetailPage() {
+	const url = process.env.REACT_APP_NODE_API_URL;
 	const [recipe, setRecipe] = useState(null);
 	const [reviews, setReviews] = useState([]);
 	const { token } = useContext(AuthContext);
@@ -21,13 +22,13 @@ function RecipeDetailPage() {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		fetch(`http://localhost:5500/api/recipes/${id}`)
+		fetch(`${url}/recipes/${id}`)
 			.then((res) => res.json())
-			.then((data) => setRecipe(data));
+			.then((data) => setRecipe(data.data));
 	}, [id]);
 
 	function postReviews(reviewsFormData) {
-		fetch("http://localhost:5500/api/reviews", {
+		fetch(`${url}/reviews`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -57,7 +58,7 @@ function RecipeDetailPage() {
 	}
 
 	function deleteRecipe() {
-		fetch(`/recipes/${id}`, {
+		fetch(`${url}/recipes/${id}`, {
 			method: "DELETE",
 			headers: {
 				authorization: `Bearer ${token}`,
@@ -101,11 +102,11 @@ function RecipeDetailPage() {
 							<div className=" rounded my-4 bg-slate-100  flex items-center gap-2">
 								<Share />
 								{/* <div className="py-1  px-4 text-sm flex items-center gap-4"><BsShareFill /> Share</div>
-		                    <div className="grid grid-cols-3 gap-4 w-max text-xl py-2 px-6">
-		                        <button className="hover:text-orange-500"><RiWhatsappFill /></button>
-		                        <button className="hover:text-orange-500"><BsFacebook /></button>
-		                        <button className="hover:text-orange-500"><BsTwitter /></button>
-		                    </div> */}
+							<div className="grid grid-cols-3 gap-4 w-max text-xl py-2 px-6">
+								<button className="hover:text-orange-500"><RiWhatsappFill /></button>
+								<button className="hover:text-orange-500"><BsFacebook /></button>
+								<button className="hover:text-orange-500"><BsTwitter /></button>
+							</div> */}
 								<div className="flex items-center gap-2 border rounded-lg p-2 bg-slate-200">
 									<button
 										onClick={() => {

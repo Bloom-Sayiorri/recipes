@@ -16,6 +16,7 @@ import HomePage from "./pages/HomePage";
 import UserDashboard from "./pages/UserDashboard";
 import About from "./pages/About";
 import Users from "./pages/Users";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
 	const [search, setSearch] = useState("");
@@ -28,20 +29,21 @@ function App() {
 			<Navbar search={search} handleSearch={handleSearch} />
 			<div className="grow">
 				<Routes>
-					<Route path="/recipes" element={<LandingPage search={search} />} />
-					<Route path="/admins" element={<AdminDashboard />} />
-					<Route path="/viewmeal/:id" element={<RecipeDetailPage />} />
-					<Route path="/share" element={<Share />} />
+					<Route path="/" element={<HomePage />} />
 					<Route path="/signup" element={<Signup />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/about" element={<About />} />
-					<Route path="/" element={<HomePage />} />
-					<Route path="/addrecipe" element={<AddRecipeForm />} />
-					<Route path="/submitted" element={<SubmittedRecipes />} />
-					<Route path="/user" element={<UserDashboard />} />
-					<Route path="/about" element={<About />} />
 					<Route path="/contact" element={<Contact />} />
-					<Route path="/allusers" element={<Users />} />
+					<Route path="/recipes" element={<LandingPage search={search} />} />
+					<Route element={<ProtectedRoute />}>
+						<Route path="/admins" element={<AdminDashboard />} />
+						<Route path="/viewmeal/:id" element={<RecipeDetailPage />} />
+						<Route path="/share" element={<Share />} />
+						<Route path="/addrecipe" element={<AddRecipeForm />} />
+						<Route path="/submitted" element={<SubmittedRecipes />} />
+						<Route path="/user" element={<UserDashboard />} />
+						<Route path="/allusers" element={<Users />} />
+					</Route>
 				</Routes>
 			</div>
 			<Footer />

@@ -37,7 +37,7 @@ function Footer() {
 			<div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
 				<div className="flex items-center gap-2 text-gray-400 text-sm md:text-base">
 					<MdCopyright />
-					<span>2023 Recipe-Share</span>
+					<span>2026 Recipe-Share</span>
 				</div>
 				<ul className="flex gap-6 text-sm md:text-base">
 					<li>

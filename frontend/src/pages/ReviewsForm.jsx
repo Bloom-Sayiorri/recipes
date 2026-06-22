@@ -15,10 +15,8 @@ const ReviewsForm = ({postReviews, id}) => {
       user_id: localStorage.getItem("userID"),
       recipe_id: id
     }
-
     postReviews(reviewsFormData)
   }
-
 
   const handleStarClick = (star) => {
     setRating(star);

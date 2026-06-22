@@ -2,20 +2,18 @@ import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { AiOutlineBackward } from 'react-icons/ai'
 
-
 function UserDashboard() {
+  const url = process.env.REACT_APP_NODE_API_URL;
   const [user, setUser] = useState({});
-
   const [email, setEmail] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
-
 
   const userType = localStorage.getItem("user");
   const token = localStorage.getItem("jwt");
   const userId = localStorage.getItem("userID");
 
   useEffect(() => {
-    fetch("/me", {
+    fetch(`${url}/me`, {
       method: "GET",
       headers :{
         'Content-Type': 'application/json',
@@ -32,12 +30,9 @@ function UserDashboard() {
       });
   },[token]);
 
-// console.log(userId);
-
-
   function handleUpdate(e){
     e.preventDefault()
-    fetch(`/users/${userId}`,{
+    fetch(`${url}/users/${userId}`,{
       method: "PATCH",
       headers :{
         'Content-Type': 'application/json',
@@ -52,12 +47,9 @@ function UserDashboard() {
     })
   }
 
-
-
   const handleCancel = () => {
     setIsUpdating(false);
-
-     setEmail(user.email);
+    setEmail(user.email);
   };
 
   const renderForm = () => {

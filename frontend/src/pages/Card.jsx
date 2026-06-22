@@ -3,6 +3,7 @@ import { FaHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import React, { useContext } from "react";
+// import RecipeDetailPage from "./RecipeDetailPage";
 
 function Card({ recipe }) {
 	const navigate = useNavigate();
@@ -10,7 +11,7 @@ function Card({ recipe }) {
 
 	return (
 		<div className="relative bg-white rounded-xl shadow-md hover:shadow-xl transition overflow-hidden group w-full">
-			{recipe._id ? (
+			{recipe ? (
 				<div className=" shadow-lg shadow-black w-full">
 					<img src={recipe.recipe_thumb} alt={recipe.recipe_name} className="" />
 					<h2 className="text-center p-1">{recipe.recipe_name}</h2>
@@ -27,7 +28,7 @@ function Card({ recipe }) {
 								onClick={(e) => {
 									e.preventDefault();
 									e.stopPropagation();
-									fetch("http:localhost:3000/recipes", {
+									fetch("http:localhost:5500/recipes", {
 										method: "POST",
 										headers: {
 											"Content-Type": "application/json",
@@ -50,7 +51,8 @@ function Card({ recipe }) {
 					</div>
 					<div className="p-3">
 						<button
-							onClick={() => navigate(`/viewmeal/${recipe.id}`)}
+							// onClick={() => console.log(recipe._id)}
+							onClick={() => navigate(`/viewmeal/${recipe._id}`)}
 							className="border w-1/2 mx-auto block p-3 bg-orange-600">
 							View More
 						</button>
@@ -99,5 +101,6 @@ function Card({ recipe }) {
 		</div>
 	);
 }
+
 
 export default Card;

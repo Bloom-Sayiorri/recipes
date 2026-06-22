@@ -1,59 +1,47 @@
-import React from "react";
-import { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
+import Swal from "sweetalert2";
 
 const Signup = () => {
-	const [isAdmin, setIsAdmin] = useState(false);
-	const [ userData, setUserData ] = useState({
+	const navigate = useNavigate();
+	const { signup } = useContext(AuthContext);
+	const [error, setError] = useState(null);
+	const [userData, setUserData] = useState({
 		username: "",
 		email: "",
 		password: "",
-	})
-	const navigate = useNavigate();
+		admin: false,
+	});
 
 	const handleChange = (e) => {
-		const { name, value } = e.currentTarget;
+		const { name, value, type, checked } = e.currentTarget;
 		setUserData((prev) => ({
 			...prev,
-			[name]: value,
-		}))
-	}
+			[name]: type === "checkbox" ? checked : value,
+		}));
+	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		const userData = {
-			username: e.target.username.value,
-			email: e.target.email.value,
-			password: e.target.password.value,
-			admin: isAdmin,
-		};
-		console.log(userData);
-		submitDataToApi(userData);
-	};
-
-	function submitDataToApi(data) {
-		fetch("http://localhost:3000/users", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-
-			body: JSON.stringify(data),
-		})
-			.then((res) => res.json())
-			.then((data) => {
-				console.log(data);
+		try {
+			const { username, password } = userData;
+			signup(username, password);
+			Swal.fire({
+				icon: "success",
+				title: "Logged in successfully",
 			});
+			navigate("/");
+		} catch (error) {
+			console.error(error.message);
 
-		navigate("/login");
-	}
-	const handleCheckboxChange = (event) => {
-		setIsAdmin(event.target.checked);
-	};
-
-	const handleSubmitAdmin = (event) => {
-		event.preventDefault();
-		console.log(`User is ${isAdmin ? "an admin" : "a regular user"}.`);
+			Swal.fire({
+				icon: "error",
+				title: "Error logging in",
+				text: error.message,
+			});
+			setError(error.message);
+		}
 	};
 
 	return (
@@ -104,19 +92,19 @@ const Signup = () => {
 								onChange={handleChange}
 							/>
 						</div>
-						<div onSubmit={handleSubmitAdmin} className="hidden">
+						<div className="cursor-not-allowed">
 							<label htmlFor="admin" className="block text-black text-lg font-bold mb-2">
 								Admin
 							</label>
 							<div className="shadow appearance-none border border-[#160194] rounded-md w-full py-2 px-3 text-black mb-3 leading-tight focus:outline-none focus:shadow-outline">
-								<label htmlFor="checked-checkbox" className="flex items-center gap-2">
+								<label htmlFor="admin" className="flex items-center gap-2">
 									<input
+										id="admin"
 										type="checkbox"
-										checked={isAdmin}
-										onChange={handleCheckboxChange}
-										disabled={true}
-										defaultValue={false}
-										className="pt-4 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+										checked={userData.admin}
+										onChange={handleChange}
+										// disabled={true}
+										className="cursor-not-allowed pt-4 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
 									/>
 									Are you an admin?
 								</label>
@@ -125,7 +113,7 @@ const Signup = () => {
 						<div className="flex items-center flex-col gap-5">
 							<button
 								disabled={!userData.username || !userData.email || !userData.password}
-								className="w-full bg-[#0C54BF] hover:bg-blue-900 text-white font-bold py-2 px-12 rounded-md focus:outline-none focus:shadow-outline disabled:bg-gray-300 disabled:cursor-not-allowed">
+								className="w-full bg-[#0C54BF] hover:bg-blue-900 text-white font-bold py-2 px-12 rounded-md focus:outline-none focus:shadow-outline disabled:bg-red-600 disabled:cursor-not-allowed disabled:line-through">
 								Sign Up
 							</button>
 							<h6 className="">
@@ -140,11 +128,9 @@ const Signup = () => {
 					</form>
 				</div>
 			</div>
+			<p className="font-bold text-red-500 text-lg">{error}</p>
 		</div>
 	);
 };
-
-
-
 
 export default Signup;

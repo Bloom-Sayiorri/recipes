@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../context/AuthContext"
 import { NavLink } from "react-router-dom";
 import { AiOutlineBackward } from "react-icons/ai";
 
 function UserDashboard() {
+	const url = process.env.REACT_APP_NODE_API_URL;
+	const { user: currentUser, token } = useContext(AuthContext);
 	const [user, setUser] = useState({});
 
 	const [email, setEmail] = useState("");
 	const [isUpdating, setIsUpdating] = useState(false);
 
-	const userType = localStorage.getItem("user");
-	const token = localStorage.getItem("jwt");
-	const userId = localStorage.getItem("userID");
+	const storedUser = JSON.parse(localStorage.getItem("user"));
+	const userId = storedUser?.id;
 
 	useEffect(() => {
-		fetch(`http://localhost:3000/users/${userId}`, {
+		fetch(`${url}/users/${userId}`, {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
@@ -23,27 +25,25 @@ function UserDashboard() {
 			.then((data) => {
 				setUser(data);
 			});
-	});
+	}, [userId, url]);
 
-	useEffect(() => {
-		fetch("/me", {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: "Bearer " + localStorage.getItem("jwt"),
-			},
-		})
-			.then((res) => res.json())
-			.then((data) => {
-				//  console.log(data);
-				setUser(data);
-			})
-			.catch((error) => {
-				console.error("Error:", error);
-			});
-	}, [token]);
-
-	// console.log(userId);
+	// useEffect(() => {
+	// 	fetch("/me", {
+	// 		method: "GET",
+	// 		headers: {
+	// 			"Content-Type": "application/json",
+	// 			Authorization: "Bearer " + localStorage.getItem("jwt"),
+	// 		},
+	// 	})
+	// 		.then((res) => res.json())
+	// 		.then((data) => {
+	// 			//  console.log(data);
+	// 			setUser(data);
+	// 		})
+	// 		.catch((error) => {
+	// 			console.error("Error:", error);
+	// 		});
+	// }, [token]);
 
 	function handleUpdate(e) {
 		e.preventDefault();
@@ -169,3 +169,4 @@ function UserDashboard() {
 }
 
 export default UserDashboard;
+

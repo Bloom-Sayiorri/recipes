@@ -6,12 +6,15 @@
 	button {
 		@apply border-none px-3 py-2 rounded-lg;
 	}
+}
 
-	input, textarea {
-		@apply rounded-xl;
+@layer components {
+	.form-input {
+		@apply rounded-xl border border-gray-200 pl-4 py-2;
 	}
 }
 
 .navbar {
 	color: rgb(184, 220, 223);
 }
+

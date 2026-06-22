@@ -1,64 +1,56 @@
-import React from "react";
-import { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 import Swal from "sweetalert2";
 
-const Login = () => {
-	// const{login}=useContext(AuthContext)
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
+function Login() {
+	const { login } = useContext(AuthContext);
+	const [userData, setUserData] = useState({
+		username: "",
+		email: "",
+		password: "",
+		admin: false,
+	});
 	const [error, setError] = useState(null);
 	const navigate = useNavigate();
 
-	const handleSubmit = (e) => {
-		// send Data to rails
-		e.preventDefault();
+	const handleChange = (e) => {
+		const { name, value } = e.target;
 
-		fetch("http://localhost:3000/login", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-
-			body: JSON.stringify({ username: username, password: password }),
-		})
-			.then((res) => res.json())
-			.then((data) => {
-				if (data.error) {
-					setError("You are not allowed to log in");
-					Swal.fire({
-						icon: "error",
-						title: "Oops...",
-						text: "You are not allowed to log in!",
-					});
-				} else {
-					localStorage.setItem("jwt", data.jwt);
-					localStorage.setItem("user", data.user.username);
-					localStorage.setItem("admin", data.user.admin);
-					localStorage.setItem("userID", data.user.id);
-
-					if (data) {
-						navigate("/home");
-					} else {
-						Swal.fire({
-							icon: "error",
-							title: "Oops...",
-							text: "Wrong names or password!",
-						});
-					}
-					Swal.fire({
-						position: "top-end",
-						icon: "success",
-						title: "Welcome to Recipe-Share!",
-						showConfirmButton: false,
-						timer: 1500,
-					});
-				}
-			});
+		setUserData((prev) => ({
+			...prev,
+			[name]: value,
+		}));
 	};
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		try {
+			const { username, password } = userData;
+			login(username, password);
+			Swal.fire({
+				icon: "success",
+				position: "top-end",
+				title: "Logged in successfully",
+				showConfirmButton: false,
+				timer: 1500,
+			});
+			navigate("/");
+		} catch (error) {
+			console.error(error.message);
+
+			Swal.fire({
+				icon: "error",
+				title: "Error logging in",
+				text: error.message,
+			});
+			setError(error.message);
+		}
+	};
+
 	return (
 		<div className="bg-gray-50 min-h-screen flex items-center justify-center">
-			<div className="bg-gray-100 flex rounded-2xl shadow-lg max-w-3xl p-20">
+			<div className="bg-gray-200 flex rounded-2xl shadow-lg max-w-3xl p-20">
 				<div className="sm:block hidden w-full">
 					<h2 className="font-bold text-2xl text-center">Login</h2>
 					<form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -69,7 +61,7 @@ const Login = () => {
 							<input
 								type="text"
 								name="username"
-								onChange={(e) => setUsername(e.target.value)}
+								onChange={handleChange}
 								className="p-2 rounded-xl border"
 								placeholder="John Doe"
 							/>
@@ -81,7 +73,7 @@ const Login = () => {
 							<input
 								type="password"
 								name="password"
-								onChange={(e) => setPassword(e.target.value)}
+								onChange={handleChange}
 								className="p-2 rounded-xl border"
 								placeholder=" password"
 							/>
@@ -93,11 +85,10 @@ const Login = () => {
 								Forgot Password?
 							</a>
 							<button
-								disabled={!password || !username}
-								className="w-full bg-[#0C54BF] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-gray-300 disabled:cursor-not-allowed">
+								disabled={!userData.password || !userData.username}
+								className="w-full bg-[#0C54BF] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-red-600 disabled:cursor-not-allowed disabled:line-through">
 								Login
 							</button>
-
 							<h6>
 								Don't have an account?
 								<Link
@@ -110,9 +101,9 @@ const Login = () => {
 					</form>
 				</div>
 			</div>
+			<p className="font-bold text-red-500 text-lg">{error}</p>
 		</div>
 	);
-};
+}
 
 export default Login;
-

@@ -4,14 +4,15 @@ import { NavLink } from "react-router-dom";
 import recipe from "../images/recipe.jpg";
 
 function HomePage() {
+	const url = process.env.REACT_APP_NODE_API_URL;
 	const [favorites, setFavorites] = useState([]);
 
 	useEffect(() => {
-		fetch("http://localhost:5500/api/favorites?_limit=10")
+		fetch(`${url}/favorites?_limit=10`)
 			.then((res) => res.json())
 			.then((data) => {
-				setFavorites(data);
-				// console.log(data);
+				setFavorites(data.data);
+				// console.log(data.data);
 			})
 			.catch((err) => console.error("Error fetching favorites:", err));
 	}, []);
@@ -55,5 +56,6 @@ function HomePage() {
 		</div>
 	);
 }
+
 
 export default HomePage;

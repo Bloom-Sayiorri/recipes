@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Loading from "./Loading";
 
 function LandingPage({ search }) {
+	const url = process.env.REACT_APP_NODE_API_URL;
 	const [recipes, setRecipes] = useState([]);
 	// const [search, setSearch] = useState("");
 	// function handleSearch(value) {
@@ -15,7 +16,7 @@ function LandingPage({ search }) {
 	const [currentPage, setCurrentPage] = useState(0);
 
 	useEffect(() => {
-		fetch("http://localhost:5500/api/recipes")
+		fetch(`${url}/recipes`)
 			.then((response) => response.json())
 			.then((data) => {
 				const recipesArray = Object.values(data.data);
@@ -136,9 +137,3 @@ function Pagination({ totalPages, currentPage, onPageChange }) {
 }
 
 export default LandingPage;
-
-
-
-
-
-
