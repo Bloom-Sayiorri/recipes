@@ -1,19 +1,20 @@
+import { useContext, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
+import Search from "./Search";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useState } from "react";
 import Swal from "sweetalert2";
 import { IoMdRestaurant } from "react-icons/io";
 import { HiMenu, HiX } from "react-icons/hi";
-import Search from "./Search";
 
 function Navbar({ search, handleSearch }) {
-	const user = localStorage.getItem("user");
-	const role = localStorage.getItem("admin");
+
+	const { user } = useContext(AuthContext);
 	const navigate = useNavigate();
 
 	const [menuOpen, setMenuOpen] = useState(false);
 
 	function handleDashboards() {
-		if (role + "" === true + "") {
+		if (user?.admin) {
 			navigate("/admins");
 		} else {
 			navigate("/user");
@@ -73,16 +74,14 @@ function Navbar({ search, handleSearch }) {
 									Favorite Recipes
 								</button>
 
-								<NavLink
-									to="/addrecipe"
-									className="text-orange-600 hover:bg-orange-600 hover:text-white rounded-md">
+								<NavLink to="/addrecipe" className="text-orange-600 hover:bg-orange-600 hover:text-white rounded-md">
 									Add Recipe
 								</NavLink>
 
 								<button
 									onClick={handleDashboards}
 									className="text-orange-600 hover:bg-orange-600 hover:text-white rounded-md">
-									{user}
+									Welcome, {user?.username}
 								</button>
 
 								<button
@@ -149,7 +148,7 @@ function Navbar({ search, handleSearch }) {
 										setMenuOpen(false);
 									}}
 									className="p-2 text-orange-600 hover:bg-orange-600 hover:text-white rounded-md text-left">
-									{user}
+									Welcome, {user?.username}
 								</button>
 
 								<button

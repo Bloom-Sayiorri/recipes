@@ -15,7 +15,14 @@ const AuthProvider = ({ children }) => {
 
 	useEffect(() => {
 		const storedToken = localStorage.getItem("token");
-		const storedUser = JSON.parse(localStorage.getItem("user"));
+
+		let storedUser = null;
+
+		try {
+			storedUser = JSON.parse(localStorage.getItem("user"));
+		} catch (err) {
+			storedUser = null;
+		}
 		if (storedToken && storedUser) {
 			setUser(storedUser);
 			setToken(storedToken);
@@ -30,10 +37,6 @@ const AuthProvider = ({ children }) => {
 	};
 
 	const signup = async (userData) => {
-		if (!userData.email || !userData.password) {
-			console.log("signup function executed with userData:", userData);
-			throw new Error("Email and password are required.");
-		}
 		const res = await fetch(`${url}/auth/signup`, {
 			method: "POST",
 			headers: {
@@ -49,6 +52,12 @@ const AuthProvider = ({ children }) => {
 		}
 
 		setUser(data.user);
+
+		if (data.token) {
+			setToken(data.token);
+			localStorage.setItem("token", data.token);
+		}
+
 		localStorage.setItem("user", JSON.stringify(data.user));
 	};
 
@@ -85,7 +94,7 @@ const AuthProvider = ({ children }) => {
 		return user;
 	};
 
-	return <AuthContext.Provider value={{ user, token, login, logout, signup }}>{children}</AuthContext.Provider>;
+	return <AuthContext.Provider value={{ user, setUser, token, login, logout, signup }}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;

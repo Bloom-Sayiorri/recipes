@@ -25,13 +25,12 @@ const Signup = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		try {
-			const { username, password } = userData;
-			signup(username, password);
+			signup(userData);
 			Swal.fire({
 				icon: "success",
 				title: "Logged in successfully",
 			});
-			navigate("/");
+			navigate("/login");
 		} catch (error) {
 			console.error(error.message);
 

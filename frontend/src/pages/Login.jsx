@@ -4,7 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import Swal from "sweetalert2";
 
 function Login() {
-	const { login } = useContext(AuthContext);
+	const { user, login } = useContext(AuthContext);
 	const [userData, setUserData] = useState({
 		username: "",
 		email: "",
@@ -30,10 +30,13 @@ function Login() {
 			login(username, password);
 			Swal.fire({
 				icon: "success",
-				position: "top-end",
 				title: "Logged in successfully",
-				showConfirmButton: false,
+			});
+			Swal.fire({
+				icon: "success",
+				title: `Welcome ${user?.username}`,
 				timer: 1500,
+				showConfirmatino: false,
 			});
 			navigate("/");
 		} catch (error) {

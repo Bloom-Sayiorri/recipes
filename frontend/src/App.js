@@ -1,7 +1,7 @@
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import React, { useState } from "react";
-import LandingPage from "./pages/LandingPage";
+import Recipes from "./pages/Recipes";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Contact from "./pages/Contact";
@@ -34,7 +34,7 @@ function App() {
 					<Route path="/login" element={<Login />} />
 					<Route path="/about" element={<About />} />
 					<Route path="/contact" element={<Contact />} />
-					<Route path="/recipes" element={<LandingPage search={search} />} />
+					<Route path="/recipes" element={<Recipes search={search} />} />
 					<Route element={<ProtectedRoute />}>
 						<Route path="/admins" element={<AdminDashboard />} />
 						<Route path="/viewmeal/:id" element={<RecipeDetailPage />} />

@@ -2,7 +2,7 @@ import Card from "./Card";
 import React, { useState, useEffect } from "react";
 import Loading from "./Loading";
 
-function LandingPage({ search }) {
+function Recipes({ search }) {
 	const url = process.env.REACT_APP_NODE_API_URL;
 	const [recipes, setRecipes] = useState([]);
 	// const [search, setSearch] = useState("");
@@ -136,4 +136,4 @@ function Pagination({ totalPages, currentPage, onPageChange }) {
 	);
 }
 
-export default LandingPage;
+export default Recipes;
