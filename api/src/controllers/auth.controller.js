@@ -6,11 +6,9 @@ import { JWT_EXPIRES_IN, JWT_SECRET } from "../config/env.js";
 
 export const signup = async (req, res, next) => {
 	try {
-		const { username, email, password, passwordConfirmation } = req.body;
-		if (!password || password !== passwordConfirmation) {
-			return next(new AppError("Passwords do not match", 400));
-		}
-		const user = await User.create({ username, email, password });
+		const { username, email, password } = req.body;
+		const hashedPassword = await bcrypt.hash(password, 10);
+		const user = await User.create({ username, email, password: hashedPassword, admin: false });
 		res.status(201).json({
 			success: true,
 			message: "User created successfully",
@@ -18,6 +16,7 @@ export const signup = async (req, res, next) => {
 				id: user.id,
 				username: user.username,
 				email: user.email,
+				admin: user.admin,
 			},
 		});
 	} catch (error) {
@@ -74,7 +73,6 @@ export const logout = async (req, res, next) => {
 		// For JWT-based auth, logout is handled by the client
 		// simply discarding the token.
 		// (Optional: add token to a "blacklist" DB/Redis to invalidate it.)
-
 		res.status(200).json({
 			success: true,
 			message: "Logout successful.",

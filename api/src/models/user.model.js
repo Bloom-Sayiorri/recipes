@@ -22,12 +22,18 @@ const userSchema = new mongoose.Schema(
 			required: [true, "Password field required."],
 			minLength: [6, "Password must be at least 6 characters."],
 			maxLength: [255, "Password too long."],
+			select: false,
 		},
 		avatar: {
 			type: String,
 			required: false,
-			default: null,
+			default: "",
 		},
+		admin: {
+			type: Boolean,
+			required: false,
+			default: false,
+		}
 	},
 	{ timestamps: true }
 );
