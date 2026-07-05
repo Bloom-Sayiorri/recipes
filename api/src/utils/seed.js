@@ -12,6 +12,7 @@ import User from "../models/user.model.js";
 import Review from "../models/review.model.js";
 import Notification from "../models/notification.model.js";
 import Profile from "../models/profile.model.js";
+import Contact from "../models/contact.model.js";
 
 export async function seedUsers() {
 	const users = [];
@@ -292,5 +293,48 @@ export async function seedProfiles() {
 		console.error(error);
 		process.exit(1);
 	}
-
 }
+
+export async function seedContacts() {
+	try {
+		await mongoose.connect(MONGO_URI);
+		console.log("DB connected on seedContact");
+		console.log("Preparing to seed contacts");
+
+		let contact = [];
+		const users = await User.find({});
+		await Contact.deleteMany({});
+
+		for (let i = 0; i < 10; i++) {
+			const randomUser = users[Math.floor(Math.random() * users.length)];
+			const name = randomUser.username;
+			const email = randomUser.email;
+			const contactObj = {
+				fullname: name,
+				email: email,
+				comment: faker.lorem.sentence(),
+			};
+			contact.push(contactObj);
+		}
+		await Contact.insertMany(contact);
+		console.log("Contacts seeded successfully");
+		console.log(contact);
+		mongoose.connection.close();
+		process.exit();
+	} catch (error) {
+		console.error(error);
+		process.exit(1);
+	}
+};
+
+// export async function seedAll() {
+// 	Promise.all([
+// 		await seedUsers(),
+// 		await seedRecipes(),
+// 		await seedFavorites(),
+// 		await seedReviews(),
+// 		await seedNotifications(),
+// 		await seedProfiles(),
+//		await seedContactS(),
+// 	]);
+// }
