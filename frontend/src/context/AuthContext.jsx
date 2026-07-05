@@ -1,4 +1,6 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 export const AuthContext = createContext({
 	user: null,
@@ -12,6 +14,15 @@ const AuthProvider = ({ children }) => {
 	const url = process.env.REACT_APP_NODE_API_URL;
 	const [user, setUser] = useState(null);
 	const [token, setToken] = useState(null);
+	const navigate = useNavigate();
+
+	const logout = useCallback(() => {
+		localStorage.removeItem("user");
+		localStorage.removeItem("token");
+		setUser(null);
+		setToken(null);
+		navigate("/login");
+	}, [navigate]);
 
 	useEffect(() => {
 		const storedToken = localStorage.getItem("token");
@@ -23,18 +34,41 @@ const AuthProvider = ({ children }) => {
 		} catch (err) {
 			storedUser = null;
 		}
-		if (storedToken && storedUser) {
-			setUser(storedUser);
-			setToken(storedToken);
-		}
-	}, []);
+		if(!storedToken || !storedUser) return;
+		try {
+			const decoded = jwtDecode(storedToken);
 
-	const logout = () => {
-		localStorage.removeItem("user");
-		localStorage.removeItem("token");
-		setUser(null);
-		setToken(null);
-	};
+			if (decoded.exp * 1000 <= Date.now()) {
+				logout();
+				return;
+			}
+
+			setToken(storedToken);
+			setUser(storedUser);
+		} catch (error) {
+			logout();
+		}
+	}, [logout]);
+
+	useEffect(() => {
+		if (!token) return;
+
+		const decoded = jwtDecode(token);
+
+		const expiresAt = decoded.exp * 1000;
+		const timeRemaining = expiresAt - Date.now();
+
+		if (timeRemaining <= 0) {
+			logout();
+			return;
+		}
+
+		const timer = setTimeout(() => {
+			logout();
+		}, timeRemaining);
+
+		return () => clearTimeout(timer);
+	}, [token, logout]);
 
 	const signup = async (userData) => {
 		const res = await fetch(`${url}/auth/signup`, {
@@ -69,7 +103,6 @@ const AuthProvider = ({ children }) => {
 			},
 			body: JSON.stringify({ username, password }),
 		});
-
 		const data = await response.json();
 
 		if (!response.ok || data.authorized === false) {
@@ -96,5 +129,9 @@ const AuthProvider = ({ children }) => {
 
 	return <AuthContext.Provider value={{ user, setUser, token, login, logout, signup }}>{children}</AuthContext.Provider>;
 };
+
+
+
+
 
 export default AuthProvider;

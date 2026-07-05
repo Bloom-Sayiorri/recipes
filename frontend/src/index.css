@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,6 +8,10 @@
 	button {
 		@apply border-none px-3 py-2 rounded-lg;
 	}
+	input,
+	textarea {
+		@apply rounded-lg;
+	}
 }
 
 @layer components {
@@ -13,8 +19,3 @@
 		@apply rounded-xl border border-gray-200 pl-4 py-2;
 	}
 }
-
-.navbar {
-	color: rgb(184, 220, 223);
-}
-

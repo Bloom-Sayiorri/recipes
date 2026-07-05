@@ -38,7 +38,7 @@ function App() {
 					<Route element={<ProtectedRoute />}>
 						<Route path="/admins" element={<AdminDashboard />} />
 						<Route path="/viewmeal/:id" element={<RecipeDetailPage />} />
-						<Route path="/share" element={<Share />} />
+						<Route path="/share/:id" element={<Share />} />
 						<Route path="/addrecipe" element={<AddRecipeForm />} />
 						<Route path="/submitted" element={<SubmittedRecipes />} />
 						<Route path="/user" element={<UserDashboard />} />

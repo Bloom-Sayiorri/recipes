@@ -19,11 +19,10 @@ function Recipes({ search }) {
 		fetch(`${url}/recipes`)
 			.then((response) => response.json())
 			.then((data) => {
-				const recipesArray = Object.values(data.data);
 				// console.log(data.data);
 				setRecipes(data.data);
 			});
-	}, []);
+	}, [url]);
 
 	function organizePages(data, perPage) {
 		let temp = [];

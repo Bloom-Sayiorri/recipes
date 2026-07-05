@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import { GoPin } from "react-icons/go";
 
 function SubmittedRecipes() {
 	const url = process.env.REACT_APP_NODE_API_URL;
-	const [recipe, setRecipe] = useState(null);
-	const { id } = useParams();
+	const [recipe, setRecipe] = useState([]);
 
 	useEffect(() => {
 		fetch(`${url}/recipes`)
 			.then((res) => res.json())
 			.then((data) => setRecipe(data));
-	}, []);
+	}, [url]);
 
 	let ingredients = [],
 		instructions = [];

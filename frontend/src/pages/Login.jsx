@@ -11,7 +11,6 @@ function Login() {
 		password: "",
 		admin: false,
 	});
-	const [error, setError] = useState(null);
 	const navigate = useNavigate();
 
 	const handleChange = (e) => {
@@ -23,36 +22,33 @@ function Login() {
 		}));
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
 			const { username, password } = userData;
-			login(username, password);
+			const res = await login(username, password);
 			Swal.fire({
 				icon: "success",
-				title: "Logged in successfully",
-			});
-			Swal.fire({
-				icon: "success",
-				title: `Welcome ${user?.username}`,
+				title: `Welcome ${username}`,
 				timer: 1500,
-				showConfirmatino: false,
+				showConfirmation: false,
 			});
-			navigate("/");
+			if (!res) {
+				throw new Error("Error logging in!");
+			} else {
+				navigate("/");
+			}
 		} catch (error) {
-			console.error(error.message);
-
 			Swal.fire({
 				icon: "error",
-				title: "Error logging in",
+				title: "Invalid login credentials!",
 				text: error.message,
 			});
-			setError(error.message);
 		}
 	};
 
 	return (
-		<div className="bg-gray-50 min-h-screen flex items-center justify-center">
+		<div className="bg-gray-50 min-h-screen flex flex-col items-center justify-center">
 			<div className="bg-gray-200 flex rounded-2xl shadow-lg max-w-3xl p-20">
 				<div className="sm:block hidden w-full">
 					<h2 className="font-bold text-2xl text-center">Login</h2>
@@ -104,7 +100,7 @@ function Login() {
 					</form>
 				</div>
 			</div>
-			<p className="font-bold text-red-500 text-lg">{error}</p>
+			{/* <p className="font-bold text-red-500 text-lg">{error}</p> */}
 		</div>
 	);
 }

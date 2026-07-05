@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { AiOutlineBackward } from "react-icons/ai";
 import { AuthContext } from "../context/AuthContext";
@@ -9,9 +9,15 @@ function UserDashboard() {
 	const { user, setUser, token } = useContext(AuthContext);
 
 	const [email, setEmail] = useState(user?.email || "");
+	const [avatar, setAvatar] = useState(user?.avatar || "");
 	const [isUpdating, setIsUpdating] = useState(false);
 
 	const userId = user?.id;
+
+	useEffect(() => {
+		setEmail(user?.email || "");
+		setAvatar(user?.avatar || "");
+	}, [user])
 
 	async function handleUpdate(e) {
 		e.preventDefault();
@@ -23,7 +29,7 @@ function UserDashboard() {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
 				},
-				body: JSON.stringify({ email }),
+				body: JSON.stringify({ email, avatar }),
 			});
 
 			const data = await response.json();
@@ -32,13 +38,10 @@ function UserDashboard() {
 				throw new Error(data.message || "Failed to update profile");
 			}
 
-      setUser(data.user);
-      localStorage.setItem('user', JSON.stringify(dats.user));
+			setUser(data.user);
+			localStorage.setItem("user", JSON.stringify(data.user));
 
 			setIsUpdating(false);
-
-			// Optional:
-			// Update AuthContext user here if you add updateUser() to context
 		} catch (error) {
 			console.error(error);
 		}
@@ -46,6 +49,7 @@ function UserDashboard() {
 
 	function handleCancel() {
 		setEmail(user?.email || "");
+		setAvatar(user?.avatar || "");
 		setIsUpdating(false);
 	}
 
@@ -72,6 +76,16 @@ function UserDashboard() {
 					/>
 				</div>
 
+				<div className="mb-6">
+					<label className="block text-gray-600 font-bold mb-2">Avatar</label>
+					<input
+						type="text"
+						value={avatar}
+						onChange={(e) => setAvatar(e.target.value)}
+						className="shadow appearance-none border rounded w-full py-2 px-3"
+					/>
+				</div>
+
 				<div className="flex gap-3">
 					<button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">
 						Save
@@ -89,7 +103,11 @@ function UserDashboard() {
 		return (
 			<div className="mx-auto my-10 max-w-lg border-t border-gray-200 pt-4">
 				<h2 className="text-3xl font-semibold mb-4">Welcome, {user?.username}</h2>
-
+				<div className="">
+					{user?.avatar && (
+						<img src={user.avatar} alt={user.username} className="w-24 h-24 rounded-full object-cover mb-4" />
+					)}
+				</div>
 				<hr className="my-4" />
 
 				<div className="flex justify-between">

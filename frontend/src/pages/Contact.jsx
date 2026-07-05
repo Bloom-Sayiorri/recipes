@@ -3,6 +3,7 @@ import image1 from "../image1.jpg";
 import { FaInstagram, FaTwitter, FaFacebook } from "react-icons/fa";
 
 function Contact() {
+	const url = process.env.REACT_APP_NODE_API_URL;
 	const [change, setChange] = useState({
 		fullname: "",
 		email: "",
@@ -16,67 +17,32 @@ function Contact() {
 		}));
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
+		try {
+			const res = await fetch(`${url}/contact`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(change),
+			});
+
+			const data = await res.json();
+
+			console.log(data);
+
+			setChange({
+				fullname: "",
+				email: "",
+				comment: "",
+			});
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	return (
-		// <div className="container mx-auto mt-8 mb-8 grid md-w-3/4 grid-cols-1 md:grid-cols-2 w-3/4">
-		// 	<div className="bg-white drop-shadow-2xl shadow-md rounded-md p-6 flex flex-col gap-10 w-full">
-		// 		<div>
-		// 			<h1 className="text-2xl font-bold mb-4">
-		// 				<div className="flex flex-col justify-center items-center">
-		// 					<span className="text-orange-600">Contact Info</span>
-		// 				</div>
-		// 			</h1>
-		// 		</div>
-		// 		<div>
-		// 			<div>
-		// 				<div className="flex items-center gap-2 mb-8">
-		// 					<div>
-		// 						<FaMapMarkerAlt size={26} className="text-orange-500" />
-		// 					</div>
-		// 					<p>Ngong' Road Lane</p>
-		// 					<p>P.O. BOX 233, NAIROBI</p>
-		// 				</div>
-		// 				<div className="flex items-center gap-2 my-8">
-		// 					<div>
-		// 						<BsEnvelopePaper size={26} className="text-orange-500" />
-		// 					</div>
-		// 					<p>recipeshare@gmail.com</p>
-		// 				</div>
-		// 				<div className="flex items-center gap-2 my-8">
-		// 					<div>
-		// 						<BsTelephoneInbound size={26} className="text-orange-500" />
-		// 					</div>
-		// 					<p>001 200000000000</p>
-		// 				</div>
-		// 				<div className="flex items-center gap-2 my-8">
-		// 					<div>
-		// 						<FaMobileAlt size={26} className="text-orange-500" />
-		// 					</div>
-		// 					<p>+2547 42064943</p>
-		// 				</div>
-		// 				<div className="flex gap-12 justify-end mt-72 ">
-		// 					<div className="flex gap-2 items-center">
-		// 						<FaFacebook size={32} className="text-blue-700" />
-		// 						Facebook
-		// 					</div>
-		// 					<div className="flex gap-2 items-center">
-		// 						<FaInstagram size={32} className="text-purple-500" />
-		// 						Instagram
-		// 					</div>
-		// 					<div className="flex gap-2 items-center">
-		// 						<FaTwitter size={32} className="text-sky-400" />
-		// 						Twitter
-		// 					</div>
-		// 				</div>
-		// 			</div>
-		// 		</div>
-		// 	</div>
-		// 	<img src={image1} alt="Recipe" className="w-full h-full object-cover" />
-		// </div>
-
 		<div className="container mx-auto mt-8 grid md-w-3/4 grid-cols-1 md:grid-cols-2 w-3/4 ">
 			<div className="bg-white drop-shadow-2xl shadow-md rounded-tl-lg rounded-bl-lg flex flex-col gap-5 items-center justify-center h-3/4 w-full">
 				<div className="flex flex-col mb-4 justify-center items-center">
@@ -110,7 +76,6 @@ function Contact() {
 					<div className="flex flex-col">
 						<label htmlFor="comment">Comment</label>
 						<textarea
-							type="text"
 							name="comment"
 							id="comment"
 							onChange={handleChange}
@@ -120,6 +85,11 @@ function Contact() {
 							cols="50"
 							className="form-input"></textarea>
 					</div>
+					<button
+						type="submit"
+						className="bg-orange-600 text-white px-4 py-2 cursor-pointer rounded-lg hover:text-orange-600 hover:bg-white hover:font-bold active:bg-orange-700 focus:ring-2 focus:ring-orange-600">
+						Submit
+					</button>
 				</form>
 				<div className="mt-8">
 					<h3 className="text-orange-600 font-bold text-xl">You can also follow us on our socials</h3>
