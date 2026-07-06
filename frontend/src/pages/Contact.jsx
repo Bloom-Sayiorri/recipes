@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import image1 from "../image1.jpg";
+import image1 from "../images/image1.jpg";
 import { FaInstagram, FaTwitter, FaFacebook } from "react-icons/fa";
 
 function Contact() {

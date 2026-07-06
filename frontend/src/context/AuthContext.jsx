@@ -12,8 +12,11 @@ export const AuthContext = createContext({
 
 const AuthProvider = ({ children }) => {
 	const url = process.env.REACT_APP_NODE_API_URL;
-	const [user, setUser] = useState(null);
-	const [token, setToken] = useState(null);
+	const [user, setUser] = useState(() =>{
+		const storedUser = localStorage.getItem("user");
+		return storedUser ? JSON.parse(storedUser) : null;
+	})
+	const [token, setToken] = useState(localStorage.getItem("token"));
 	const navigate = useNavigate();
 
 	const logout = useCallback(() => {
@@ -129,9 +132,5 @@ const AuthProvider = ({ children }) => {
 
 	return <AuthContext.Provider value={{ user, setUser, token, login, logout, signup }}>{children}</AuthContext.Provider>;
 };
-
-
-
-
 
 export default AuthProvider;

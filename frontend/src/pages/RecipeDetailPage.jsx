@@ -10,8 +10,6 @@ import Swal from "sweetalert2";
 import Share from "./Share";
 import ReviewsForm from "./ReviewsForm";
 
-// import { AuthContext } from "../context/AuthContext";
-
 function RecipeDetailPage() {
 	const url = process.env.REACT_APP_NODE_API_URL;
 	const [recipe, setRecipe] = useState(null);
@@ -25,7 +23,7 @@ function RecipeDetailPage() {
 		fetch(`${url}/recipes/${id}`)
 			.then((res) => res.json())
 			.then((data) => setRecipe(data.data));
-	}, [id]);
+	}, [url, id]);
 
 	function postReviews(reviewsFormData) {
 		fetch(`${url}/reviews`, {

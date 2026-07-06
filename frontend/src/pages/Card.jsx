@@ -6,6 +6,7 @@ import React, { useContext } from "react";
 // import RecipeDetailPage from "./RecipeDetailPage";
 
 function Card({ recipe }) {
+	const url = process.env.REACT_APP_NODE_API_URL;
 	const navigate = useNavigate();
 	const { user } = useContext(AuthContext);
 
@@ -26,25 +27,25 @@ function Card({ recipe }) {
 						{user && (
 							<div
 								onClick={(e) => {
-									e.preventDefault();
-									e.stopPropagation();
-									fetch("http:localhost:5500/recipes", {
-										method: "POST",
-										headers: {
-											"Content-Type": "application/json",
-											Accept: "application/json",
-										},
-										body: JSON.stringify({
-											user_id: user.id,
-											recipe_id: recipe.id,
-										}),
-									}).then((response) => {
-										if (response.status < 400) {
-											navigate("/");
-										}
-									});
+									// e.preventDefault();
+									// e.stopPropagation();
+									// fetch(`${url}/recipes`, {
+									// 	method: "POST",
+									// 	headers: {
+									// 		"Content-Type": "application/json",
+									// 		Accept: "application/json",
+									// 	},
+									// 	body: JSON.stringify({
+									// 		user_id: user.id,
+									// 		recipe_id: recipe.id,
+									// 	}),
+									// }).then((response) => {
+									// 	if (response.status < 400) {
+									// 		navigate("/");
+									// 	}
+									// });
 								}}
-								className="absolute top-5 right-2 text-red-800">
+								className="absolute top-5 right-2 text-transparent cursor-pointer">
 								<FaHeart size={32} />
 							</div>
 						)}
@@ -101,6 +102,5 @@ function Card({ recipe }) {
 		</div>
 	);
 }
-
 
 export default Card;

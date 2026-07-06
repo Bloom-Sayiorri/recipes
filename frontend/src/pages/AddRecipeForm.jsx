@@ -485,7 +485,6 @@
 // 	);
 // }
 
-
 // export default AddRecipeForm;
 
 import React, { useEffect, useState, useContext } from "react";
@@ -497,16 +496,19 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function AddRecipeForm() {
-	const { token } = useContext(AuthContext);
+	const url = process.env.REACT_APP_NODE_API_URL;
+	const { user, token } = useContext(AuthContext);
 
 	// Single unified recipe state (removed duplicate individual states)
 	const [recipe, setRecipe] = useState({
 		name: "",
 		category: "",
 		description: "",
-		youtubeUrl: "",
 		countryOfOrigin: "",
 		numberOfPeopleServed: "",
+		approved: false,
+		user_id: "",
+		youtubeUrl: "",
 	});
 
 	// Separate states for image (file for upload, preview for display)
@@ -569,18 +571,21 @@ function AddRecipeForm() {
 		}
 		recipeFormData["recipe_thumb"] = mainImageUrl;
 
-		fetch("http://localhost:3000/recipes", {
+		const response = await fetch(`${url}/recipes/new`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
-				authorization: `Bearer ${token}`,
+				Authorization: `Bearer ${token}`,
 			},
 			body: JSON.stringify(recipeFormData),
-		})
-			.then((response) => response.json())
-			.then(() => {
-				navigate("/");
-			});
+		});
+		if(!response.ok) {
+			throw new Error("Recipes upload failed");
+		}
+		const data = await response.json();
+		if (data) {
+			navigate("/");
+		}
 	}
 
 	const handleAddIngredient = () => {
@@ -613,12 +618,15 @@ function AddRecipeForm() {
 
 		const recipeFormData = {
 			recipe_name: recipe.name,
+			recipe_category: recipe.category,
 			description: recipe.description,
 			country_of_origin: recipe.countryOfOrigin,
 			number_of_people_served: recipe.numberOfPeopleServed,
 			ingredients: ingredients.map(({ name, measure }) => `${name}|${measure}`).join("\r\n"),
 			instructions: steps.join("\r\n"),
+			approved: false,
 			youtube_code: recipe.youtubeUrl,
+			user_id: user?.id,
 		};
 
 		postRecipe(recipeFormData);
@@ -845,7 +853,7 @@ function Ingredient({ index, ingredient, updateIngredients, handleRemoveIngredie
 		if (ingredientImageFile) {
 			upload(ingredientImageFile);
 		}
-	}, [upload, ingredientImageFile]);
+	}, [ingredientImageFile]);
 
 	async function upload(file) {
 		const CLOUDNAME = process.env.REACT_APP_CLOUDNAME;
@@ -853,11 +861,15 @@ function Ingredient({ index, ingredient, updateIngredients, handleRemoveIngredie
 		imageData.append("file", file); // use raw file, not base64
 		imageData.append("upload_preset", "recipes");
 
-		const res = await axios.post(`https://api.cloudinary.com/v1_1/${CLOUDNAME}/image/upload`, imageData);
-
-		if (res.status === 200) {
-			const imageUrl = res.data["secure_url"];
-			updateIngredients(index, "image", imageUrl);
+		try {
+			const res = await axios.post(`https://api.cloudinary.com/v1_1/${CLOUDNAME}/image/upload`, imageData);
+			if (res.status === 200) {
+				const imageUrl = res.data["secure_url"];
+				updateIngredients(index, "image", imageUrl);
+			}
+		} catch (error) {
+			console.error(error);
+			return;
 		}
 	}
 

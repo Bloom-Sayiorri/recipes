@@ -31,7 +31,6 @@ function Login() {
 				icon: "success",
 				title: `Welcome ${username}`,
 				timer: 1500,
-				showConfirmation: false,
 			});
 			if (!res) {
 				throw new Error("Error logging in!");

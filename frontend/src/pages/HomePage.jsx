@@ -1,20 +1,27 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Card from "./Card";
 import { NavLink } from "react-router-dom";
 import recipe from "../images/recipe.jpg";
+import { AuthContext } from "../context/AuthContext";
 
 function HomePage() {
+	const { token } = useContext(AuthContext);
 	const url = process.env.REACT_APP_NODE_API_URL;
 	const [favorites, setFavorites] = useState([]);
 
 	useEffect(() => {
-		fetch(`${url}/favorites?_limit=10`)
+		fetch(`${url}/favorites`, {
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
 			.then((res) => res.json())
 			.then((data) => {
 				setFavorites(data.data);
 			})
-			.catch((err) => console.error("Error fetching favorites:", err));
-	}, []);
+			.catch((err) => console.error(err));
+	}, [url, token]);
 
 	return (
 		<div className="w-full">
@@ -55,6 +62,5 @@ function HomePage() {
 		</div>
 	);
 }
-
 
 export default HomePage;
