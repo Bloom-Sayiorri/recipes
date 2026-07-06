@@ -5,7 +5,7 @@ const getAllRecipes = async (req, res, next) => {
 	try {
 		const recipes = await Recipe.find({});
 		if (recipes.length === 0) {
-			return next(new AppError("No recipes found.", 404));
+			return next(new AppError("No recipes found.", 200));
 		}
 		res.status(200).json({
 			success: true,

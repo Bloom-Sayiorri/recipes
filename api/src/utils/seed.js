@@ -325,16 +325,14 @@ export async function seedContacts() {
 		console.error(error);
 		process.exit(1);
 	}
-};
+}
 
 // export async function seedAll() {
-// 	Promise.all([
-// 		await seedUsers(),
-// 		await seedRecipes(),
-// 		await seedFavorites(),
-// 		await seedReviews(),
-// 		await seedNotifications(),
-// 		await seedProfiles(),
-//		await seedContactS(),
-// 	]);
+// 	await seedUsers();
+// 	await seedRecipes();
+// 	await seedFavorites();
+// 	await seedReviews();
+// 	await seedNotifications();
+// 	await seedProfiles();
+// 	await seedContacts();
 // }

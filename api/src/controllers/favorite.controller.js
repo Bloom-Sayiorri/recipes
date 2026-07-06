@@ -1,9 +1,10 @@
 import Favorite from "../models/favorite.model.js";
+import Recipe from "../models/recipe.model.js";
 import AppError from "../utils/appError.js";
 
 const getAllFavorites = async (req, res, next) => {
 	try {
-		const favorites = await Favorite.find({}).select("-createdAt -updatedAt");
+		const favorites = await Favorite.find({user: req.user._id}).populate("recipe").populate("user").select("-createdAt -updatedAt");
 		if (favorites.length === 0) {
 			return next(new AppError("No favorites found", 404));
 		}
@@ -19,8 +20,10 @@ const getAllFavorites = async (req, res, next) => {
 
 const getFavorite = async (req, res, next) => {
 	try {
-		const { id } = req.params;
-		const favorite = await Favorite.findById(id).select("-createdAt -updatedAt");
+		const favorite = Favorite.findById(req.params.id);
+		const recipe = await Recipe.findById(favorite.recipe);
+		console.log(recipe);
+		// const favorite = await Favorite.findById(id).select("-createdAt -updatedAt");
 		if (!favorite) {
 			return next(new AppError("Favorite not found", 404));
 		}
@@ -69,7 +72,7 @@ const updateFavorite = async (req, res, next) => {
 
 const deleteFavorite = async (req, res, next) => {
 	try {
-		await Favorite.findByIdAndDelete(req.params.id);
+		const favorite = await Favorite.findByIdAndDelete(req.params.id);
 		if (!favorite) {
 			return next(new AppError("Favorite not found", 404));
 		}
