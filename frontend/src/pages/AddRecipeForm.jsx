@@ -487,7 +487,7 @@
 
 // export default AddRecipeForm;
 
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import { AiOutlineCamera } from "react-icons/ai";
 import { FaPlus } from "react-icons/fa";
 import { RxCrossCircled } from "react-icons/rx";
@@ -849,13 +849,7 @@ function Ingredient({ index, ingredient, updateIngredients, handleRemoveIngredie
 	// Fix #6: useEffect triggers upload when ingredientImageFile changes
 	const [ingredientImageFile, setIngredientImageFile] = useState(null);
 
-	useEffect(() => {
-		if (ingredientImageFile) {
-			upload(ingredientImageFile);
-		}
-	}, [ingredientImageFile]);
-
-	async function upload(file) {
+	const upload = useCallback(async (file) => {
 		const CLOUDNAME = process.env.REACT_APP_CLOUDNAME;
 		const imageData = new FormData();
 		imageData.append("file", file); // use raw file, not base64
@@ -871,12 +865,18 @@ function Ingredient({ index, ingredient, updateIngredients, handleRemoveIngredie
 			console.error(error);
 			return;
 		}
-	}
+	}, [index, updateIngredients]);
+
+	useEffect(() => {
+		if (ingredientImageFile) {
+			upload(ingredientImageFile);
+		}
+	}, [ingredientImageFile, upload]);
 
 	function handleImageUpload(e) {
 		const file = e.target.files[0];
 		if (!file) return;
-		setIngredientImageFile(file); // triggers useEffect → upload
+		setIngredientImageFile(file);
 		const reader = new FileReader();
 		reader.onload = () => setIngredientImagePreview(reader.result);
 		reader.readAsDataURL(file);
@@ -936,5 +936,6 @@ function Ingredient({ index, ingredient, updateIngredients, handleRemoveIngredie
 		</div>
 	);
 }
+
 
 export default AddRecipeForm;

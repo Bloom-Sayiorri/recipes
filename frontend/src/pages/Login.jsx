@@ -4,7 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import Swal from "sweetalert2";
 
 function Login() {
-	const { user, login } = useContext(AuthContext);
+	const { login } = useContext(AuthContext);
 	const [userData, setUserData] = useState({
 		username: "",
 		email: "",

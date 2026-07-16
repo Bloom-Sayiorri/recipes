@@ -3,10 +3,8 @@ import { FaHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import React, { useContext } from "react";
-// import RecipeDetailPage from "./RecipeDetailPage";
 
 function Card({ recipe }) {
-	const url = process.env.REACT_APP_NODE_API_URL;
 	const navigate = useNavigate();
 	const { user } = useContext(AuthContext);
 

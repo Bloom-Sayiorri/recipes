@@ -372,7 +372,7 @@ function Navbar({ search, handleSearch }) {
 							<IoMdRestaurant size={20} color="#fff" />
 						</div>
 						<span className="font-jakarta font-bold text-[1.5rem] text-[#111827] tracking-[-0.02em]">
-							Recipe<span style={{ color: "#ea580c" }}>Share</span>
+							Recipiez<span style={{ color: "#ea580c" }}>Share</span>
 						</span>
 					</NavLink>
 
