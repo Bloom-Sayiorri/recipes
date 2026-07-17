@@ -32,6 +32,10 @@ app.get("/", (req, res) => {
 	res.json({ message: "Hello World" });
 });
 
+app.get("/api/test", (req, res) => {
+	res.json({ message: "API is working" });
+});
+
 app.use(async (req, res, next) => {
 	try {
 		await connectDB();
