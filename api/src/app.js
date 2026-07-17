@@ -16,8 +16,6 @@ import contactRouter from "./routes/contact.route.js";
 
 const app = express();
 
-await connectDB();
-
 app.use(
 	cors({
 		origin: ["https://recipiez-share.netlify.app/", "http://localhost:4001"],
@@ -30,6 +28,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.use(async (req, res, next) => {
+	try {
+		await connectDB();
+		next();
+	} catch (err) {
+		next(err);
+	}
+});
+
 app.use("/api/users", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/recipes", recipeRouter);
@@ -40,6 +47,5 @@ app.use("/api/profiles", profileRouter);
 app.use("/api/contact", contactRouter);
 
 app.use(errorMiddleware);
-
 
 export default app;
