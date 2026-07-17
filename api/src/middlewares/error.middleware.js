@@ -9,7 +9,7 @@ export default function errorMiddleware(err, req, res, next) {
 		statusCode = 400;
 		message = "Resource not found.";
 	}
-
+	
 	// Mongoose validation error
 	if (err.name === "ValidationError") {
 		statusCode = 400;
