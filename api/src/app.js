@@ -29,7 +29,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.get("/test", (req, res) => {
+app.get("/api/test", (req, res) => {
 	res.json({ message: "Hello World from test route" });
 });
 
