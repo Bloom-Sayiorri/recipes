@@ -29,9 +29,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.get("/api", (req, res) => {
-	res.json({ message: "Hello World" });
-});
 app.get("/test", (req, res) => {
 	res.json({ message: "Hello World from test route" });
 });
