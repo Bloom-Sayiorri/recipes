@@ -32,6 +32,9 @@ app.use(cookieParser());
 app.get("/api", (req, res) => {
 	res.json({ message: "Hello World" });
 });
+app.get("/test", (req, res) => {
+	res.json({ message: "Hello World from test route" });
+});
 
 app.use(async (req, res, next) => {
 	try {
