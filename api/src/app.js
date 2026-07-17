@@ -37,14 +37,14 @@ app.get("/api/test", (req, res) => {
 	res.json({ message: "API is working" });
 });
 
-app.use(async (req, res, next) => {
-	try {
-		await connectDB();
-		next();
-	} catch (err) {
-		next(err);
-	}
-});
+// app.use(async (req, res, next) => {
+// 	try {
+// 		await connectDB();
+// 		next();
+// 	} catch (err) {
+// 		next(err);
+// 	}
+// });
 
 // app.use("/api/users", userRouter);
 // app.use("/api/auth", authRouter);
