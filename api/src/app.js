@@ -33,7 +33,7 @@ app.get("/", (req, res) => {
 	res.json({ message: "Hello World" });
 });
 
-app.get("/api/test", (req, res) => {
+app.get("/test", (req, res) => {
 	res.json({ message: "API is working" });
 });
 
